@@ -1,5 +1,5 @@
 name: ht_email_repository
-description: ...
+description: A Dart package providing a repository layer for email operations within the Headlines Toolkit ecosystem.
 repository: https://github.com/headlines-toolkit/ht-email-repository
 publish_to: none
 
