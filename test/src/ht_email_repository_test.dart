@@ -63,7 +63,7 @@ void main() {
 
       test('propagates NetworkException from client', () async {
         // Arrange
-        final exception = NetworkException();
+        const exception = NetworkException();
         when(
           () => mockEmailClient.sendOtpEmail(
             recipientEmail: any(named: 'recipientEmail'),
@@ -92,7 +92,7 @@ void main() {
 
       test('propagates InvalidInputException from client', () async {
         // Arrange
-        final exception = InvalidInputException('Invalid email format');
+        const exception = InvalidInputException('Invalid email format');
         when(
           () => mockEmailClient.sendOtpEmail(
             recipientEmail: any(named: 'recipientEmail'),
@@ -121,7 +121,7 @@ void main() {
 
       test('propagates ServerException from client', () async {
         // Arrange
-        final exception = ServerException('Email service unavailable');
+        const exception = ServerException('Email service unavailable');
         when(
           () => mockEmailClient.sendOtpEmail(
             recipientEmail: any(named: 'recipientEmail'),
@@ -150,7 +150,7 @@ void main() {
 
       test('propagates OperationFailedException from client', () async {
         // Arrange
-        final exception = OperationFailedException('Unknown sending error');
+        const exception = OperationFailedException('Unknown sending error');
         when(
           () => mockEmailClient.sendOtpEmail(
             recipientEmail: any(named: 'recipientEmail'),
