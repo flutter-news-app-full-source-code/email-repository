@@ -12,9 +12,8 @@ class HtEmailRepository {
   ///
   /// Requires an instance of [HtEmailClient] to handle the actual
   /// email sending operations.
-  const HtEmailRepository({
-    required HtEmailClient emailClient,
-  }) : _emailClient = emailClient;
+  const HtEmailRepository({required HtEmailClient emailClient})
+    : _emailClient = emailClient;
 
   final HtEmailClient _emailClient;
 
