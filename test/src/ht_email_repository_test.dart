@@ -28,34 +28,35 @@ void main() {
 
     group('sendOtpEmail', () {
       test(
-          'calls sendTransactionalEmail on client with correct data successfully',
-          () async {
-        // Arrange
-        when(
-          () => mockEmailClient.sendTransactionalEmail(
-            recipientEmail: any(named: 'recipientEmail'),
-            templateId: any(named: 'templateId'),
-            templateData: any(named: 'templateData'),
-          ),
-        ).thenAnswer((_) async {}); // Simulate successful void return
+        'calls sendTransactionalEmail on client with correct data successfully',
+        () async {
+          // Arrange
+          when(
+            () => mockEmailClient.sendTransactionalEmail(
+              recipientEmail: any(named: 'recipientEmail'),
+              templateId: any(named: 'templateId'),
+              templateData: any(named: 'templateData'),
+            ),
+          ).thenAnswer((_) async {}); // Simulate successful void return
 
-        // Act
-        await emailRepository.sendOtpEmail(
-          recipientEmail: testEmail,
-          otpCode: testOtpCode,
-          templateId: testTemplateId,
-        );
-
-        // Assert
-        verify(
-          () => mockEmailClient.sendTransactionalEmail(
+          // Act
+          await emailRepository.sendOtpEmail(
             recipientEmail: testEmail,
+            otpCode: testOtpCode,
             templateId: testTemplateId,
-            templateData: {'otp_code': testOtpCode},
-          ),
-        ).called(1);
-        verifyNoMoreInteractions(mockEmailClient);
-      });
+          );
+
+          // Assert
+          verify(
+            () => mockEmailClient.sendTransactionalEmail(
+              recipientEmail: testEmail,
+              templateId: testTemplateId,
+              templateData: {'otp_code': testOtpCode},
+            ),
+          ).called(1);
+          verifyNoMoreInteractions(mockEmailClient);
+        },
+      );
 
       test('propagates HtHttpException from client', () async {
         // Arrange

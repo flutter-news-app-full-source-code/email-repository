@@ -38,9 +38,7 @@ class HtEmailRepository {
       await _emailClient.sendTransactionalEmail(
         recipientEmail: recipientEmail,
         templateId: templateId,
-        templateData: {
-          'otp_code': otpCode,
-        },
+        templateData: {'otp_code': otpCode},
       );
     } on HtHttpException {
       rethrow; // Propagate client-level exceptions
