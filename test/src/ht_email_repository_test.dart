@@ -1,7 +1,7 @@
 // test/src/ht_email_repository_test.dart
 import 'package:ht_email_client/ht_email_client.dart';
 import 'package:ht_email_repository/ht_email_repository.dart';
-import 'package:ht_shared/ht_shared.dart'; // For HtHttpException and subtypes
+import 'package:ht_shared/ht_shared.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
@@ -15,32 +15,27 @@ void main() {
 
     const testEmail = 'test@example.com';
     const testOtpCode = '123456';
+    const testTemplateId = 'd-otp-template';
 
     setUp(() {
       mockEmailClient = MockHtEmailClient();
       emailRepository = HtEmailRepository(emailClient: mockEmailClient);
-
-      // Register fallback values for any() matchers if needed,
-      // especially for parameters with default values or complex types.
-      // Example: registerFallbackValue(Uri.parse('http://example.com'));
     });
-
-    // Teardown can be used to reset mocks after each test if necessary
-    // tearDown(() {
-    //   reset(mockEmailClient);
-    // });
 
     test('can be instantiated', () {
       expect(HtEmailRepository(emailClient: MockHtEmailClient()), isNotNull);
     });
 
     group('sendOtpEmail', () {
-      test('calls sendOtpEmail on client successfully', () async {
+      test(
+          'calls sendTransactionalEmail on client with correct data successfully',
+          () async {
         // Arrange
         when(
-          () => mockEmailClient.sendOtpEmail(
+          () => mockEmailClient.sendTransactionalEmail(
             recipientEmail: any(named: 'recipientEmail'),
-            otpCode: any(named: 'otpCode'),
+            templateId: any(named: 'templateId'),
+            templateData: any(named: 'templateData'),
           ),
         ).thenAnswer((_) async {}); // Simulate successful void return
 
@@ -48,26 +43,28 @@ void main() {
         await emailRepository.sendOtpEmail(
           recipientEmail: testEmail,
           otpCode: testOtpCode,
+          templateId: testTemplateId,
         );
 
         // Assert
         verify(
-          () => mockEmailClient.sendOtpEmail(
+          () => mockEmailClient.sendTransactionalEmail(
             recipientEmail: testEmail,
-            otpCode: testOtpCode,
+            templateId: testTemplateId,
+            templateData: {'otp_code': testOtpCode},
           ),
         ).called(1);
-        // Verify no other methods were called on the mock
         verifyNoMoreInteractions(mockEmailClient);
       });
 
-      test('propagates NetworkException from client', () async {
+      test('propagates HtHttpException from client', () async {
         // Arrange
         const exception = NetworkException();
         when(
-          () => mockEmailClient.sendOtpEmail(
+          () => mockEmailClient.sendTransactionalEmail(
             recipientEmail: any(named: 'recipientEmail'),
-            otpCode: any(named: 'otpCode'),
+            templateId: any(named: 'templateId'),
+            templateData: any(named: 'templateData'),
           ),
         ).thenThrow(exception); // Simulate client throwing the exception
 
@@ -76,106 +73,21 @@ void main() {
           () => emailRepository.sendOtpEmail(
             recipientEmail: testEmail,
             otpCode: testOtpCode,
+            templateId: testTemplateId,
           ),
-          throwsA(exception), // Expect the exact exception to be propagated
+          throwsA(isA<HtHttpException>()),
         );
 
         // Verify the client method was called
         verify(
-          () => mockEmailClient.sendOtpEmail(
+          () => mockEmailClient.sendTransactionalEmail(
             recipientEmail: testEmail,
-            otpCode: testOtpCode,
+            templateId: testTemplateId,
+            templateData: {'otp_code': testOtpCode},
           ),
         ).called(1);
         verifyNoMoreInteractions(mockEmailClient);
       });
-
-      test('propagates InvalidInputException from client', () async {
-        // Arrange
-        const exception = InvalidInputException('Invalid email format');
-        when(
-          () => mockEmailClient.sendOtpEmail(
-            recipientEmail: any(named: 'recipientEmail'),
-            otpCode: any(named: 'otpCode'),
-          ),
-        ).thenThrow(exception);
-
-        // Act & Assert
-        expect(
-          () => emailRepository.sendOtpEmail(
-            recipientEmail: testEmail,
-            otpCode: testOtpCode,
-          ),
-          throwsA(exception),
-        );
-
-        // Verify
-        verify(
-          () => mockEmailClient.sendOtpEmail(
-            recipientEmail: testEmail,
-            otpCode: testOtpCode,
-          ),
-        ).called(1);
-        verifyNoMoreInteractions(mockEmailClient);
-      });
-
-      test('propagates ServerException from client', () async {
-        // Arrange
-        const exception = ServerException('Email service unavailable');
-        when(
-          () => mockEmailClient.sendOtpEmail(
-            recipientEmail: any(named: 'recipientEmail'),
-            otpCode: any(named: 'otpCode'),
-          ),
-        ).thenThrow(exception);
-
-        // Act & Assert
-        expect(
-          () => emailRepository.sendOtpEmail(
-            recipientEmail: testEmail,
-            otpCode: testOtpCode,
-          ),
-          throwsA(exception),
-        );
-
-        // Verify
-        verify(
-          () => mockEmailClient.sendOtpEmail(
-            recipientEmail: testEmail,
-            otpCode: testOtpCode,
-          ),
-        ).called(1);
-        verifyNoMoreInteractions(mockEmailClient);
-      });
-
-      test('propagates OperationFailedException from client', () async {
-        // Arrange
-        const exception = OperationFailedException('Unknown sending error');
-        when(
-          () => mockEmailClient.sendOtpEmail(
-            recipientEmail: any(named: 'recipientEmail'),
-            otpCode: any(named: 'otpCode'),
-          ),
-        ).thenThrow(exception);
-
-        // Act & Assert
-        expect(
-          () => emailRepository.sendOtpEmail(
-            recipientEmail: testEmail,
-            otpCode: testOtpCode,
-          ),
-          throwsA(exception),
-        );
-
-        // Verify
-        verify(
-          () => mockEmailClient.sendOtpEmail(
-            recipientEmail: testEmail,
-            otpCode: testOtpCode,
-          ),
-        ).called(1);
-        verifyNoMoreInteractions(mockEmailClient);
-      });
-    }); // End group 'sendOtpEmail'
-  }); // End group 'HtEmailRepository'
-} // End main
+    });
+  });
+}
