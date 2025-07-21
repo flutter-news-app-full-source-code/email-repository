@@ -17,25 +17,33 @@ class HtEmailRepository {
 
   final HtEmailClient _emailClient;
 
-  /// Sends a One-Time Password (OTP) email via the email client.
+  /// Sends a One-Time Password (OTP) email by calling the underlying client.
   ///
-  /// Delegates the call to the injected [HtEmailClient].
+  /// This method abstracts the specific details of sending an OTP email. It
+  /// constructs the required `templateData` and calls the generic
+  /// `sendTransactionalEmail` method on the injected [HtEmailClient].
   ///
-  /// Throws [HtHttpException] subtypes on failure, as propagated
-  /// from the client.
+  /// - [recipientEmail]: The email address of the recipient.
+  /// - [otpCode]: The One-Time Password to be sent.
+  /// - [templateId]: The ID of the transactional email template to use.
+  ///
+  /// Throws [HtHttpException] subtypes on failure, as propagated from the
+  /// client.
   Future<void> sendOtpEmail({
     required String recipientEmail,
     required String otpCode,
+    required String templateId,
   }) async {
     try {
-      await _emailClient.sendOtpEmail(
+      await _emailClient.sendTransactionalEmail(
         recipientEmail: recipientEmail,
-        otpCode: otpCode,
+        templateId: templateId,
+        templateData: {
+          'otp_code': otpCode,
+        },
       );
     } on HtHttpException {
       rethrow; // Propagate client-level exceptions
     }
-    // Catch-all for unexpected errors is generally avoided here,
-    // relying on the client's defined exceptions.
   }
 }
