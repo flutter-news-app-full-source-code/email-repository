@@ -13,6 +13,7 @@ void main() {
     late HtEmailClient mockEmailClient;
     late HtEmailRepository emailRepository;
 
+    const testSenderEmail = 'sender@example.com';
     const testEmail = 'test@example.com';
     const testOtpCode = '123456';
     const testTemplateId = 'd-otp-template';
@@ -33,6 +34,7 @@ void main() {
           // Arrange
           when(
             () => mockEmailClient.sendTransactionalEmail(
+              senderEmail: any(named: 'senderEmail'),
               recipientEmail: any(named: 'recipientEmail'),
               templateId: any(named: 'templateId'),
               templateData: any(named: 'templateData'),
@@ -41,6 +43,7 @@ void main() {
 
           // Act
           await emailRepository.sendOtpEmail(
+            senderEmail: testSenderEmail,
             recipientEmail: testEmail,
             otpCode: testOtpCode,
             templateId: testTemplateId,
@@ -49,6 +52,7 @@ void main() {
           // Assert
           verify(
             () => mockEmailClient.sendTransactionalEmail(
+              senderEmail: testSenderEmail,
               recipientEmail: testEmail,
               templateId: testTemplateId,
               templateData: {'otp_code': testOtpCode},
@@ -63,6 +67,7 @@ void main() {
         const exception = NetworkException();
         when(
           () => mockEmailClient.sendTransactionalEmail(
+            senderEmail: any(named: 'senderEmail'),
             recipientEmail: any(named: 'recipientEmail'),
             templateId: any(named: 'templateId'),
             templateData: any(named: 'templateData'),
@@ -72,6 +77,7 @@ void main() {
         // Act & Assert
         expect(
           () => emailRepository.sendOtpEmail(
+            senderEmail: testSenderEmail,
             recipientEmail: testEmail,
             otpCode: testOtpCode,
             templateId: testTemplateId,
@@ -82,6 +88,7 @@ void main() {
         // Verify the client method was called
         verify(
           () => mockEmailClient.sendTransactionalEmail(
+            senderEmail: testSenderEmail,
             recipientEmail: testEmail,
             templateId: testTemplateId,
             templateData: {'otp_code': testOtpCode},
