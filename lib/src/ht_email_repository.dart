@@ -23,6 +23,7 @@ class HtEmailRepository {
   /// constructs the required `templateData` and calls the generic
   /// `sendTransactionalEmail` method on the injected [HtEmailClient].
   ///
+  /// - [senderEmail]: The email address of the sender.
   /// - [recipientEmail]: The email address of the recipient.
   /// - [otpCode]: The One-Time Password to be sent.
   /// - [templateId]: The ID of the transactional email template to use.
@@ -30,12 +31,14 @@ class HtEmailRepository {
   /// Throws [HtHttpException] subtypes on failure, as propagated from the
   /// client.
   Future<void> sendOtpEmail({
+    required String senderEmail,
     required String recipientEmail,
     required String otpCode,
     required String templateId,
   }) async {
     try {
       await _emailClient.sendTransactionalEmail(
+        senderEmail: senderEmail,
         recipientEmail: recipientEmail,
         templateId: templateId,
         templateData: {'otp_code': otpCode},
