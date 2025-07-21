@@ -58,6 +58,7 @@ const otpTemplateId = 'd-123456789'; // This would come from config
 // Now you can use the repository methods
 try {
   await emailRepository.sendOtpEmail(
+    senderEmail: 'noreply@yourdomain.com',
     recipientEmail: 'user@example.com',
     otpCode: '123456',
     templateId: otpTemplateId,
