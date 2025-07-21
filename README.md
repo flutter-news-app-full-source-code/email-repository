@@ -11,11 +11,13 @@ Headlines Toolkit ecosystem.
 
 This package contains the `HtEmailRepository`, which acts as an abstraction
 layer over an `HtEmailClient` implementation (from the `ht_email_client`
-package). Its primary purpose is to provide a clean interface for email-related
-tasks while ensuring consistent error handling according to the project's
-standards (propagating `HtHttpException` subtypes from `ht_shared`).
+package). Its primary purpose is to provide a clean, business-focused interface
+for email-related tasks while ensuring consistent error handling.
 
-Currently, it focuses on sending One-Time Password (OTP) emails.
+The repository translates business-specific requests (e.g., "send an OTP")
+into generic, template-based calls to the underlying `HtEmailClient`,
+decoupling the application's core logic from the specifics of email
+formatting and delivery.
 
 ## Getting Started
 
@@ -38,23 +40,27 @@ import 'package:ht_email_repository/ht_email_repository.dart';
 ## Features
 
 *   Provides the `HtEmailRepository` class.
-*   Offers a `sendOtpEmail` method to facilitate sending OTPs via an injected
-    `HtEmailClient`.
+*   Offers a `sendOtpEmail` method that abstracts the process of sending an
+    OTP. It calls the underlying client's `sendTransactionalEmail` method,
+    passing the required template ID and data.
 
 ## Usage
 
 To use this repository, you need to provide an instance of a concrete
-`HtEmailClient` implementation during instantiation.
+`HtEmailClient` implementation during instantiation. The consumer of the
+repository is responsible for providing the template ID.
 
 ```dart
-// Example (assuming you have an HtEmailClient instance named 'myEmailClient')
+// Example (in a service that has access to config)
 final emailRepository = HtEmailRepository(emailClient: myEmailClient);
+const otpTemplateId = 'd-123456789'; // This would come from config
 
 // Now you can use the repository methods
 try {
   await emailRepository.sendOtpEmail(
     recipientEmail: 'user@example.com',
-    otpCode: '123456',****
+    otpCode: '123456',
+    templateId: otpTemplateId,
   );
   print('OTP email sent successfully!');
 } on HtHttpException catch (e) {
