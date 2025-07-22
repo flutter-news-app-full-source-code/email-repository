@@ -10,4 +10,5 @@ updates:
     schedule:
       interval: "weekly"
     ignore:
-      - dependency-name: "ht_*"
+      - dependency-name: "core"
+      - dependency-name: "email_client"

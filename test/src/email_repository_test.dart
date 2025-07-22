@@ -1,17 +1,17 @@
-// test/src/ht_email_repository_test.dart
-import 'package:ht_email_client/ht_email_client.dart';
-import 'package:ht_email_repository/ht_email_repository.dart';
-import 'package:ht_shared/ht_shared.dart';
+// test/src/email_repository_test.dart
+import 'package:core/core.dart';
+import 'package:email_client/email_client.dart';
+import 'package:email_repository/email_repository.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
-// Mock for the HtEmailClient dependency
-class MockHtEmailClient extends Mock implements HtEmailClient {}
+// Mock for the EmailClient dependency
+class MockEmailClient extends Mock implements EmailClient {}
 
 void main() {
-  group('HtEmailRepository', () {
-    late HtEmailClient mockEmailClient;
-    late HtEmailRepository emailRepository;
+  group('EmailRepository', () {
+    late EmailClient mockEmailClient;
+    late EmailRepository emailRepository;
 
     const testSenderEmail = 'sender@example.com';
     const testEmail = 'test@example.com';
@@ -19,12 +19,12 @@ void main() {
     const testTemplateId = 'd-otp-template';
 
     setUp(() {
-      mockEmailClient = MockHtEmailClient();
-      emailRepository = HtEmailRepository(emailClient: mockEmailClient);
+      mockEmailClient = MockEmailClient();
+      emailRepository = EmailRepository(emailClient: mockEmailClient);
     });
 
     test('can be instantiated', () {
-      expect(HtEmailRepository(emailClient: MockHtEmailClient()), isNotNull);
+      expect(EmailRepository(emailClient: MockEmailClient()), isNotNull);
     });
 
     group('sendOtpEmail', () {
@@ -62,7 +62,7 @@ void main() {
         },
       );
 
-      test('propagates HtHttpException from client', () async {
+      test('propagates HttpException from client', () async {
         // Arrange
         const exception = NetworkException();
         when(
@@ -82,7 +82,7 @@ void main() {
             otpCode: testOtpCode,
             templateId: testTemplateId,
           ),
-          throwsA(isA<HtHttpException>()),
+          throwsA(isA<HttpException>()),
         );
 
         // Verify the client method was called

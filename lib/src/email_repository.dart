@@ -1,34 +1,34 @@
-import 'package:ht_email_client/ht_email_client.dart';
-import 'package:ht_shared/ht_shared.dart'; // For HtHttpException
+import 'package:core/core.dart'; // For HttpException
+import 'package:email_client/email_client.dart';
 
-/// {@template ht_email_repository}
+/// {@template email_repository}
 /// A repository that handles email sending operations.
 ///
-/// This repository interacts with an underlying [HtEmailClient]
+/// This repository interacts with an underlying [EmailClient]
 /// to send emails, such as One-Time Passwords (OTPs).
 /// {@endtemplate}
-class HtEmailRepository {
-  /// {@macro ht_email_repository}
+class EmailRepository {
+  /// {@macro email_repository}
   ///
-  /// Requires an instance of [HtEmailClient] to handle the actual
+  /// Requires an instance of [EmailClient] to handle the actual
   /// email sending operations.
-  const HtEmailRepository({required HtEmailClient emailClient})
+  const EmailRepository({required EmailClient emailClient})
     : _emailClient = emailClient;
 
-  final HtEmailClient _emailClient;
+  final EmailClient _emailClient;
 
   /// Sends a One-Time Password (OTP) email by calling the underlying client.
   ///
   /// This method abstracts the specific details of sending an OTP email. It
   /// constructs the required `templateData` and calls the generic
-  /// `sendTransactionalEmail` method on the injected [HtEmailClient].
+  /// `sendTransactionalEmail` method on the injected [EmailClient].
   ///
   /// - [senderEmail]: The email address of the sender.
   /// - [recipientEmail]: The email address of the recipient.
   /// - [otpCode]: The One-Time Password to be sent.
   /// - [templateId]: The ID of the transactional email template to use.
   ///
-  /// Throws [HtHttpException] subtypes on failure, as propagated from the
+  /// Throws [HttpException] subtypes on failure, as propagated from the
   /// client.
   Future<void> sendOtpEmail({
     required String senderEmail,
@@ -43,7 +43,7 @@ class HtEmailRepository {
         templateId: templateId,
         templateData: {'otp_code': otpCode},
       );
-    } on HtHttpException {
+    } on HttpException {
       rethrow; // Propagate client-level exceptions
     }
   }
