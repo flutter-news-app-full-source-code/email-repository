@@ -25,6 +25,7 @@ class EmailRepository {
   ///
   /// - [senderEmail]: The email address of the sender.
   /// - [recipientEmail]: The email address of the recipient.
+  /// - [subject]: The subject line of the email.
   /// - [otpCode]: The One-Time Password to be sent.
   /// - [templateId]: The ID of the transactional email template to use.
   ///
@@ -33,6 +34,7 @@ class EmailRepository {
   Future<void> sendOtpEmail({
     required String senderEmail,
     required String recipientEmail,
+    required String subject,
     required String otpCode,
     required String templateId,
   }) async {
@@ -40,6 +42,7 @@ class EmailRepository {
       await _emailClient.sendTransactionalEmail(
         senderEmail: senderEmail,
         recipientEmail: recipientEmail,
+        subject: subject,
         templateId: templateId,
         templateData: {'otp_code': otpCode},
       );
