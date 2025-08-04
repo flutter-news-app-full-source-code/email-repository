@@ -15,6 +15,7 @@ void main() {
 
     const testSenderEmail = 'sender@example.com';
     const testEmail = 'test@example.com';
+    const testSubject = 'Your OTP Code';
     const testOtpCode = '123456';
     const testTemplateId = 'd-otp-template';
 
@@ -36,6 +37,7 @@ void main() {
             () => mockEmailClient.sendTransactionalEmail(
               senderEmail: any(named: 'senderEmail'),
               recipientEmail: any(named: 'recipientEmail'),
+              subject: any(named: 'subject'),
               templateId: any(named: 'templateId'),
               templateData: any(named: 'templateData'),
             ),
@@ -45,6 +47,7 @@ void main() {
           await emailRepository.sendOtpEmail(
             senderEmail: testSenderEmail,
             recipientEmail: testEmail,
+            subject: testSubject,
             otpCode: testOtpCode,
             templateId: testTemplateId,
           );
@@ -54,6 +57,7 @@ void main() {
             () => mockEmailClient.sendTransactionalEmail(
               senderEmail: testSenderEmail,
               recipientEmail: testEmail,
+              subject: testSubject,
               templateId: testTemplateId,
               templateData: {'otp_code': testOtpCode},
             ),
@@ -69,6 +73,7 @@ void main() {
           () => mockEmailClient.sendTransactionalEmail(
             senderEmail: any(named: 'senderEmail'),
             recipientEmail: any(named: 'recipientEmail'),
+            subject: any(named: 'subject'),
             templateId: any(named: 'templateId'),
             templateData: any(named: 'templateData'),
           ),
@@ -79,6 +84,7 @@ void main() {
           () => emailRepository.sendOtpEmail(
             senderEmail: testSenderEmail,
             recipientEmail: testEmail,
+            subject: testSubject,
             otpCode: testOtpCode,
             templateId: testTemplateId,
           ),
@@ -90,6 +96,7 @@ void main() {
           () => mockEmailClient.sendTransactionalEmail(
             senderEmail: testSenderEmail,
             recipientEmail: testEmail,
+            subject: testSubject,
             templateId: testTemplateId,
             templateData: {'otp_code': testOtpCode},
           ),
