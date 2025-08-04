@@ -59,6 +59,7 @@ try {
   await emailRepository.sendOtpEmail(
     senderEmail: 'noreply@yourdomain.com',
     recipientEmail: 'user@example.com',
+    subject: 'Your One-Time Password',
     otpCode: '123456',
     templateId: otpTemplateId,
   );
