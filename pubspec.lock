@@ -94,7 +94,7 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
+      ref: c5e36d06b58918056dde4a58d177a39fb66bfe24
       resolved-ref: c5e36d06b58918056dde4a58d177a39fb66bfe24
       url: "https://github.com/flutter-news-app-full-source-code/email-client.git"
     source: git
