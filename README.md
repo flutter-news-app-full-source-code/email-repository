@@ -1,81 +1,41 @@
-# email_repository
+<div align="center">
+  <img src="https://avatars.githubusercontent.com/u/202675624?s=400&u=dc72a2b53e8158956a3b672f8e52e39394b6b610&v=4" alt="Flutter News App Toolkit Logo" width="220">
+  <h1>Email Repository</h1>
+  <p><strong>A repository that provides an abstraction layer over email operations for the Flutter News App Toolkit.</strong></p>
+</div>
 
-![coverage: percentage](https://img.shields.io/badge/coverage-100-green)
-[![style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg)](https://pub.dev/packages/very_good_analysis)
-[![License: PolyForm Free Trial](https://img.shields.io/badge/License-PolyForm%20Free%20Trial-blue)](https://polyformproject.org/licenses/free-trial/1.0.0)
+<p align="center">
+  <img src="https://img.shields.io/badge/coverage-100%25-green?style=for-the-badge" alt="coverage">
+  <a href="https://flutter-news-app-full-source-code.github.io/docs/"><img src="https://img.shields.io/badge/LIVE_DOCS-VIEW-slategray?style=for-the-badge" alt="Live Docs: View"></a>
+  <a href="https://github.com/flutter-news-app-full-source-code"><img src="https://img.shields.io/badge/MAIN_PROJECT-BROWSE-purple?style=for-the-badge" alt="Main Project: Browse"></a>
+</p>
 
-A repository that provides an abstraction layer over email operations.
+This `email_repository` package contains the `EmailRepository` class, which acts as an abstraction layer over an `EmailClient` implementation (from the `email_client` package) within the [**Flutter News App Full Source Code Toolkit**](https://github.com/flutter-news-app-full-source-code). Its primary purpose is to provide a clean, business-focused interface for email-related tasks while ensuring consistent error handling. The repository translates business-specific requests (e.g., "send an OTP") into generic, template-based calls to the underlying `EmailClient`, effectively decoupling the application's core logic from the specifics of email formatting and delivery.
 
-## Description
+## ⭐ Feature Showcase: Business-Focused Email Management
 
-This package contains the `EmailRepository`, which acts as an abstraction
-layer over an `EmailClient` implementation (from the `email_client`
-package). Its primary purpose is to provide a clean, business-focused interface
-for email-related tasks while ensuring consistent error handling.
+This package offers a comprehensive set of features for managing email operations.
 
-The repository translates business-specific requests (e.g., "send an OTP")
-into generic, template-based calls to the underlying `EmailClient`,
-decoupling the application's core logic from the specifics of email
-formatting and delivery.
+<details>
+<summary><strong>🧱 Core Functionality</strong></summary>
 
-## Getting Started
+### 🚀 `EmailRepository` Class
+- **`EmailRepository`:** Provides a clean, business-focused interface for email-related tasks, abstracting the underlying `EmailClient` implementation.
+- **`sendOtpEmail` Method:** Offers a dedicated method for sending One-Time Password (OTP) emails, abstracting the details of template ID and data construction.
 
-Add the package to your `pubspec.yaml`:
+### 🌐 Decoupled Email Logic
+- **Abstraction over `EmailClient`:** Decouples the application's core logic from the specifics of email formatting and delivery by translating business requests into generic, template-based calls to the `EmailClient`.
 
-```yaml
-dependencies:
-  email_repository:
-    git:
-      url: https://github.com/flutter-news-app-full-source-code/email-repository.git
-      # ref: <specific_tag_or_commit> # Optional: Pin to a specific version
-```
+### 🛡️ Standardized Error Handling
+- **`HttpException` Propagation:** Catches and re-throws `HttpException` subtypes (from `core`) propagated from the underlying `EmailClient`, ensuring consistent and predictable error management across the application layers.
 
-Then, import the library:
+### 💉 Dependency Injection Ready
+- **`EmailClient` Dependency:** Requires an instance of `EmailClient` (from the `email_client` package) via its constructor, promoting loose coupling and testability.
 
-```dart
-import 'package:email_repository/email_repository.dart';
-```
+> **💡 Your Advantage:** This package provides a business-focused abstraction for email operations, simplifying the integration of email sending into your application logic. It ensures consistent error handling and decouples your core application from the specifics of email service providers, enhancing maintainability and flexibility.
 
-## Features
-
-*   Provides the `EmailRepository` class.
-*   Offers a `sendOtpEmail` method that abstracts the process of sending an
-    OTP. It calls the underlying client's `sendTransactionalEmail` method,
-    passing the required template ID and data.
-
-## Usage
-
-To use this repository, you need to provide an instance of a concrete
-`EmailClient` implementation during instantiation. The consumer of the
-repository is responsible for providing the template ID.
-
-```dart
-// Example (in a service that has access to config)
-final emailRepository = EmailRepository(emailClient: myEmailClient);
-const otpTemplateId = 'd-123456789'; // This would come from config
-
-// Now you can use the repository methods
-try {
-  await emailRepository.sendOtpEmail(
-    senderEmail: 'noreply@yourdomain.com',
-    recipientEmail: 'user@example.com',
-    subject: 'Your One-Time Password',
-    otpCode: '123456',
-    templateId: otpTemplateId,
-  );
-  print('OTP email sent successfully!');
-} on HttpException catch (e) {
-  print('Failed to send OTP email: $e');
-}
-```
-
-*(Note: The specific `EmailClient` implementation will depend on your project's setup, e.g., using a real email service client or an in-memory version for testing.)*
-
-
-
+</details>
 
 ## 🔑 Licensing
 
-This package is source-available and licensed under the [PolyForm Free Trial 1.0.0](LICENSE). Please review the terms before use.
-
-For commercial licensing options that grant the right to build and distribute unlimited applications, please visit the main [**Flutter News App - Full Source Code Toolkit**](https://github.com/flutter-news-app-full-source-code) organization.
+This `email_repository` package is an integral part of the [**Flutter News App Full Source Code Toolkit**](https://github.com/flutter-news-app-full-source-code). For comprehensive details regarding licensing, including trial and commercial options for the entire toolkit, please refer to the main toolkit organization page.
