@@ -10,11 +10,11 @@ dependencies:
   core:
     git:
       url: https://github.com/flutter-news-app-full-source-code/core.git
-      ref: 828b984517edec069266579c624c7af9fbe0e2ac
+      ref: v1.2.0
   email_client:
     git:
       url: https://github.com/flutter-news-app-full-source-code/email-client.git
-      ref: c5e36d06b58918056dde4a58d177a39fb66bfe24
+      ref: v1.0.0
 
 dev_dependencies:
   mocktail: ^1.0.4
